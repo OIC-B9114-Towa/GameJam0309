@@ -1,6 +1,18 @@
 # Prerequisites
 *.d
 
+#Mofライブラリ
+MofLibrary/
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
+#デバッグファイル
+Debug/
+
+#exeファイル
+*.exe
+
 # Compiled Object files
 *.slo
 *.lo
