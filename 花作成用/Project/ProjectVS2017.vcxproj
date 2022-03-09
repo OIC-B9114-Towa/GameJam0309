@@ -95,11 +95,32 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ComboBox.cpp" />
+    <ClCompile Include="EditMenuObject.cpp" />
+    <ClCompile Include="EditSubMenuObject.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="NoTextBox.cpp" />
+    <ClCompile Include="SceneBase.cpp" />
+    <ClCompile Include="SceneEditor.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="ComboBox.h" />
+    <ClInclude Include="EditMenuObject.h" />
+    <ClInclude Include="EditSubMenuObject.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="NoTextBox.h" />
+    <ClInclude Include="SceneBase.h" />
+    <ClInclude Include="SceneEditor.h" />
+    <ClInclude Include="SceneType.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
