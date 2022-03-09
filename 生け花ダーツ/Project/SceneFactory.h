@@ -10,7 +10,7 @@ public:
 		switch (scene_type)
 		{
 		case SCENETYPE_TITLE:
-			return new CScenTitle();
+			return new CSceneTitle();
 		case SCENETYPE_GAME:
 			return new CSceneGame();
 		case SCENETYPE_OPTION:

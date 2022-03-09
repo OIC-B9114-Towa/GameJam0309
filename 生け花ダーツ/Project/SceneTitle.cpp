@@ -1,29 +1,29 @@
 #include "SceneTitle.h"
 
-CScenTitle::CScenTitle() {
+CSceneTitle::CSceneTitle() {
 
 }
 
-void CScenTitle::Initialize() {
+void CSceneTitle::Initialize() {
 
 }
 
-void CScenTitle::Update() {
+void CSceneTitle::Update() {
 
 }
 
-void CScenTitle::UpdateDebug() {
+void CSceneTitle::UpdateDebug() {
 
 }
 
-void CScenTitle::Render() {
+void CSceneTitle::Render() {
 
 }
 
-void CScenTitle::RenderDebug() {
+void CSceneTitle::RenderDebug() {
 
 }
 
-void CScenTitle::Release() {
+void CSceneTitle::Release() {
 
 }

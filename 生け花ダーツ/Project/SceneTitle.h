@@ -1,12 +1,12 @@
 #pragma once
 #include "SceneBase.h"
 
-class CScenTitle : public CSceneBase
+class CSceneTitle : public CSceneBase
 {
 private:
 
 public:
-	CScenTitle();
+	CSceneTitle();
 	void Initialize(void);
 	void Update(void);
 	void UpdateDebug(void);
