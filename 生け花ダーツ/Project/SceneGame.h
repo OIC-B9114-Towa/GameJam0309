@@ -5,33 +5,36 @@
 
 #define			FLOWERCOUNT				5
 #define			MAXWINDPOWER			5
+#define			MAXTHROWPOWER			1.2f
+#define			MINTHROWPOWER			0.8f
+#define			ADDTHROWPOWERPERFRAME	0.01f
 
 class CSceneGame : public CSceneBase
 {
 private:
 	typedef enum s_SceneState {
-		INTRO,
-		WAITTHROW,
-		PAUSE,
-		THROWING,
-		WAITTHROWRESULT,
-		GAMEEND,
+		SS_INTRO,
+		SS_WAITTHROW,
+		SS_PAUSE,
+		SS_THROWING,
+		SS_WAITTHROWRESULT,
+		SS_GAMEEND,
+		SS_RETRY,
 
-		STATE_COUNT,
+		SCENESTATE_COUNT,
 	}SceneState;
 
 	CGameUIManager gGameUIManager;
 
-	CCamera		gCamera;
-	LPGeometry	gOutBoard;							//ダーツが外れた時の判定用
-	LPGeometry	gDartsFrame;						//花を挿す枠
-	LPGeometry	gDartsOutFrame;						//枠の外側
-
-	CInGameData::Result		gScoreResult;
-	CInGameData::Wind*		gWind;
+	Result		gScoreResult;
+	Wind*		gWind;
 
 	int			gGamePhase;							//ゲーム状況
 	int			gCurrentFlowerCount;				//現在投げた花の本数
+
+	float		gThrowPower;
+	bool		gbIsThrowing;						//投てき中フラグ
+	bool		gbPowerPlus;						//投てきパワー増減フラグ
 
 public:
 	CSceneGame();

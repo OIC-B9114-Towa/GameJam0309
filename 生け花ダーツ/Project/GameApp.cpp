@@ -28,7 +28,7 @@ MofBool CGameApp::Initialize(void){
 
 	CSceneFactory factory;
 
-	g_pScene = factory.CreateScene(SceneType::SCENETYPE_TITLE);
+	g_pScene = factory.CreateScene(SceneType::SCENETYPE_GAME);
 	g_pScene->Initialize();
 
 	return TRUE;
@@ -81,7 +81,7 @@ MofBool CGameApp::Render(void){
 	//描画開始
 	g_pGraphics->RenderStart();
 	//画面のクリア
-	g_pGraphics->ClearTarget(1.0f,1.0f,1.0f,1.0f,1.0f,0);
+	g_pGraphics->ClearTarget(0.0f,0.0f,1.0f,1.0f,1.0f,0);
 
 	g_pScene->Render();
 	if (g_bDebug)

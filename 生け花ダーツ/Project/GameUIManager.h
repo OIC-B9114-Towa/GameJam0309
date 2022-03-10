@@ -6,6 +6,9 @@
 class CGameUIManager
 {
 private:
+	CFont		gScoreFont;
+	CFont		gPauseMenuFont;
+
 	CTexture	gScoreBackTexture;					//スコアバックボード
 	CTexture	gWindIconTexture;					//風のアイコン
 	CTexture	gFlowerIconBackTexture;				//花のアイコンバックボード
@@ -19,14 +22,22 @@ private:
 
 	int			gBlackCurtainAlpha;					//暗幕アルファ値
 
+	bool		gbPause;							//ポーズメニューフラグ
+	int			gCurrentMenuNum;					//現在の選択メニュー番号
+
 public:
 
 	CGameUIManager();
 	~CGameUIManager();
 	void Initialize();
 	bool GameStartAnim();
+	bool GameEndAnim();
 	void UpdateUI();
-	void RenderUI(int fcount, int fmaxcount, CInGameData::Result *result);
+	void UpdatePauseMenu();
+	void RenderUI(int fcount, int fmaxcount, Result *result);
 	void ReleaseUI();
+
+	int GetPauseMenuNum() { return gCurrentMenuNum; }
+	bool IsOpenPauseMenu() { return gbPause; }
 };
 

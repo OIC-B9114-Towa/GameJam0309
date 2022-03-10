@@ -1,32 +1,29 @@
 #pragma once
 #include <Mof.h>
 
-class CInGameData
-{
-public:
 	//花の色
 	enum FlowerType
 	{
-		BLUE,
-		RED,
-		GREEN,
+		FT_BLUE,
+		FT_RED,
+		FT_GREEN,
 
-		TYPE_COUNT,
+		FLOWERTYPE_COUNT,
 	};
 
 	//風向き
 	enum WindDirect
 	{
-		RIGHT,
-		UPPERRIGHT,
-		UPPERMIDDLE,
-		UPPERLEFT,
-		LEFT,
-		LOWERLEFT,
-		LOWERMIDDLE,
-		LOWERRIGHT,
+		WD_RIGHT,
+		WD_UPPERRIGHT,
+		WD_UPPERMIDDLE,
+		WD_UPPERLEFT,
+		WD_LEFT,
+		WD_LOWERLEFT,
+		WD_LOWERMIDDLE,
+		WD_LOWERRIGHT,
 
-		DIRECT_COUNT,
+		WINDDIRECT_COUNT,
 	};
 	typedef struct s_Result			//リザルト用構造体
 	{
@@ -43,5 +40,12 @@ public:
 	}Wind;
 
 	const float TargetPoint[3] = { 50, 70, 100 };		//得点
-};
 
+	enum PauseMenu 
+	{
+		PM_RETURNGAME,
+		PM_RETRY,
+		PM_GAMEEND,
+
+		PM_COUNT,
+	};
