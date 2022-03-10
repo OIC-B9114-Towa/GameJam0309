@@ -6,7 +6,7 @@ typedef struct tag_FlowerPartsStatus
 	int PartsNo;
 	CVector3 Scale;
 	CVector3 Translate;
-	CVector3 Color;
+	CVector4 Color;
 
 	tag_FlowerPartsStatus() :
 		PartsNo(0),

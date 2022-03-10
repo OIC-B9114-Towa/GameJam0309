@@ -28,6 +28,8 @@ bool CFlower::Load() {
 	m_PartsCount = atoi(pstr);
 	pstr = strtok(NULL, ",");
 
+	m_PartsCount = min(30, m_PartsCount);
+
 	for (int i = 0; i < m_PartsCount; i++) 
 	{
 		m_Parts[i].PartsNo = i;
@@ -49,6 +51,7 @@ bool CFlower::Load() {
 		pstr = strtok(NULL, ",");
 		m_Parts[i].Color.z = atoi(pstr);
 		pstr = strtok(NULL, ",");
+		m_Parts[i].Color.z = 1;
 	}
 
 	fclose(fp);
@@ -65,7 +68,15 @@ void CFlower::Update() {
 }
 
 void CFlower::Render() {
+	//様々なプリミティブを並べる
+	CMatrix44 matWorld;
 
+	for (int i = 0; i < m_PartsCount; i++)
+	{
+		matWorld.Scaling(m_Parts[i].Scale);
+		matWorld.SetTranslation(m_Parts[i].Translate);
+		CGraphicsUtilities::RenderBox(matWorld, m_Parts[i].Color);
+	}
 }
 
 void CFlower::Release() {
