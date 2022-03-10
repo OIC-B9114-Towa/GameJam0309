@@ -1,65 +1,32 @@
 #pragma once
 #include <Mof.h>
-
-#define			MAXWINDPOWER			5
-#define			FLOWERCOUNT				5
+#include "SceneBase.h"
+#include "InGameData.h"
 
 class CGameUIManager
 {
 private:
-	CTexture	gScoreBackTexture;
-	CTexture	gWindIconTexture;
-	CTexture	gFlowerIconTexture;
-	CTexture	gCurrentFlowerBackTexture;
+	CTexture	gScoreBackTexture;					//スコアバックボード
+	CTexture	gWindIconTexture;					//風のアイコン
+	CTexture	gFlowerIconBackTexture;				//花のアイコンバックボード
+	CTexture*	gFlowerIconTexture;					//花のアイコン
 
-	const float TargetPoint[FLOWERCOUNT] = {50, 50, 70, 70, 100};
+	CTexture	gThrowResultBackTexture;			//スコアテキストバックボード
 
-	enum FlowerType
-	{
-		BLUE,
-		RED,
-		GREEN,
+	CTexture	gPauseBack;							//ポーズ画面背景
+	CTexture	gPauseButtonBack;					//ポーズ画面ボタン背景
+	CTexture	gPauseButtonBack_Select;			//ポーズ画面ボタン背景（選択時）
 
-		TYPE_COUNT,
-	};
+	int			gBlackCurtainAlpha;					//暗幕アルファ値
 
-	enum WindDirect
-	{
-		RIGHT,
-		UPPERRIGHT,
-		UPPERMIDDLE,
-		UPPERLEFT,
-		LEFT,
-		LOWERLEFT,
-		LOWERMIDDLE,
-		LOWERRIGHT,
-
-		DIRECT_COUNT,
-	};
-
-	typedef struct s_Result
-	{
-		int			score;
-		CVector3	FlowerPos[FLOWERCOUNT];
-		int			FlowerColor[FLOWERCOUNT];
-	}Result;
-
-	typedef struct s_Wind
-	{
-		int				gWindDirect;
-		int				gWindPower;
-		CVector3		gWindPowerToVector;
-	}Wind;
-
-	Result			gScoreResult;
-	Wind			gWind[FLOWERCOUNT];
 public:
 
 	CGameUIManager();
 	~CGameUIManager();
 	void Initialize();
+	bool GameStartAnim();
 	void UpdateUI();
-	void RenderUI();
+	void RenderUI(int fcount, int fmaxcount, CInGameData::Result *result);
 	void ReleaseUI();
 };
 
