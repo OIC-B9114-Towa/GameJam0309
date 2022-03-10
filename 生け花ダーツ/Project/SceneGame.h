@@ -1,9 +1,11 @@
 #pragma once
 #include "SceneBase.h"
+#include "Flower.h"
+
 class CSceneGame : public CSceneBase
 {
 private:
-
+	CFlower m_Flower;
 public:
 	CSceneGame();
 	void Initialize(void);

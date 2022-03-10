@@ -19,6 +19,12 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{a20c0166-144d-4eb5-8532-7b0aba307927}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Flower">
+      <UniqueIdentifier>{d13d0f71-86bf-45bd-b9c2-79a543b74b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Flower">
+      <UniqueIdentifier>{a1151a89-e3d4-492c-b315-9b5101b11a21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -39,6 +45,9 @@
     <ClCompile Include="SceneOption.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Flower.cpp">
+      <Filter>ソース ファイル\Flower</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -53,14 +62,20 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneGame.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SceneOption.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Flower.h">
+      <Filter>ヘッダー ファイル\Flower</Filter>
+    </ClInclude>
+    <ClInclude Include="FlowerPartsStatus.h">
+      <Filter>ヘッダー ファイル\Flower</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
