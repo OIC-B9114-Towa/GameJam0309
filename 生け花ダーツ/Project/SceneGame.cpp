@@ -117,7 +117,17 @@ void CSceneGame::Update() {
 		break;
 
 	case SS_GAMERESULT:
-		//gGameUIManager.SlideIn();
+		if (gGameUIManager.ResultSlideIn())
+		{
+			if (g_pInput->IsKeyPush(MOFKEY_SPACE))
+			{
+				gGamePhase = SS_GAMEEND;
+			}
+			else if (g_pInput->IsKeyPush(MOFKEY_X))
+			{
+				gGamePhase = SS_RETRY;
+			}
+		}
 		break;
 
 	case SS_GAMEEND:

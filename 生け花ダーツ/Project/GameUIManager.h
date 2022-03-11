@@ -3,6 +3,9 @@
 #include "SceneBase.h"
 #include "InGameData.h"
 
+#define		RESULTSLIDESTARTPOSX			2000.0f
+#define		RESULTSLIDEADDFORCEX			0.1f
+
 class CGameUIManager
 {
 private:
@@ -19,6 +22,8 @@ private:
 	CTexture	gPauseButtonBack_Select;			//ポーズ画面ボタン背景（選択時）
 
 	int			gBlackCurtainAlpha;					//暗幕アルファ値
+	float		gResultSlideOffsetX;				//リザルト用スライドオフセットX
+	float		gResultSlideSpeedX;					//スライド速度
 
 	bool		gbPause;							//ポーズメニューフラグ
 	int			gCurrentMenuNum;					//現在の選択メニュー番号
@@ -30,6 +35,7 @@ public:
 	void Initialize();
 	bool GameStartAnim();
 	bool GameEndAnim();
+	bool ResultSlideIn();
 	void UpdateUI();
 	void UpdatePauseMenu();
 	void RenderUI(int fcount, int fmaxcount, Result *result);

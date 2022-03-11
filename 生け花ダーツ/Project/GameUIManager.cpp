@@ -11,6 +11,9 @@ CGameUIManager::CGameUIManager() :
 	gPauseButtonBack(),
 	gPauseButtonBack_Select(),
 	gBlackCurtainAlpha(255),
+	gResultSlideOffsetX(0),
+	gResultSlideSpeedX(30.0f),
+	gbPause(false),
 	gCurrentMenuNum(0)
 {}
 
@@ -38,6 +41,8 @@ void CGameUIManager::Initialize() {
 
 	//暗幕アルファ値の初期化
 	gBlackCurtainAlpha = 255;
+	gResultSlideOffsetX = RESULTSLIDESTARTPOSX;
+	gResultSlideSpeedX = -40.0f;
 	gbPause = false;
 	gCurrentMenuNum = 0;
 }
@@ -55,12 +60,29 @@ bool CGameUIManager::GameStartAnim() {
 bool CGameUIManager::GameEndAnim() {
 	gBlackCurtainAlpha += 3;
 	//暗幕が上がりきっていたら終了を通知する
-	if (gBlackCurtainAlpha > 255)
+	if (gBlackCurtainAlpha >= 255)
 	{
 		gBlackCurtainAlpha = 255;
 		return true;
 	}
 	return false;
+}
+
+bool CGameUIManager::ResultSlideIn() {
+	if (gResultSlideOffsetX > 0)
+	{
+		gResultSlideSpeedX += RESULTSLIDEADDFORCEX;
+		gResultSlideOffsetX += gResultSlideSpeedX;
+		if (gResultSlideOffsetX <= 0)
+		{
+			gResultSlideOffsetX = 0;
+		}
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }
 
 void CGameUIManager::UpdateUI() {
@@ -147,6 +169,12 @@ void CGameUIManager::RenderUI(int fcount, int fmaxcount, Result *result) {
 			}
 		}
 	}
+	//リザルトの描画(ポーズ画面背景で代用)
+	gPauseBack.Render(400 + gResultSlideOffsetX, 150);
+	char str2[256];
+	sprintf(str2, "最終Score : %d", result->score);
+	gPauseMenuFont.RenderString(700 + gResultSlideOffsetX, 440, str2);
+	gPauseMenuFont.RenderString(600 + gResultSlideOffsetX, 600, "SPACEキーでタイトルへ\nXキーでリトライ");
 
 	//暗幕の描画
 	CGraphicsUtilities::RenderFillRect(0, 0, ScreenWidth, ScreenHeight, MOF_ARGB(gBlackCurtainAlpha, 0, 0, 0));
