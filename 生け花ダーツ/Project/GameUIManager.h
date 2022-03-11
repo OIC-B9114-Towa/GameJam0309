@@ -14,8 +14,6 @@ private:
 	CTexture	gFlowerIconBackTexture;				//花のアイコンバックボード
 	CTexture*	gFlowerIconTexture;					//花のアイコン
 
-	CTexture	gThrowResultBackTexture;			//スコアテキストバックボード
-
 	CTexture	gPauseBack;							//ポーズ画面背景
 	CTexture	gPauseButtonBack;					//ポーズ画面ボタン背景
 	CTexture	gPauseButtonBack_Select;			//ポーズ画面ボタン背景（選択時）
@@ -37,6 +35,7 @@ public:
 	void RenderUI(int fcount, int fmaxcount, Result *result);
 	void ReleaseUI();
 
+	void OpenPauseMenu() { gbPause = true; }
 	int GetPauseMenuNum() { return gCurrentMenuNum; }
 	bool IsOpenPauseMenu() { return gbPause; }
 };

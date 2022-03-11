@@ -7,7 +7,6 @@ CGameUIManager::CGameUIManager() :
 	gWindIconTexture(),
 	gFlowerIconBackTexture(),
 	gFlowerIconTexture(),
-	gThrowResultBackTexture(),
 	gPauseBack(),
 	gPauseButtonBack(),
 	gPauseButtonBack_Select(),
@@ -33,17 +32,17 @@ void CGameUIManager::Initialize() {
 	gFlowerIconTexture[1].Load("Flower_Red.png");
 	gFlowerIconTexture[2].Load("Flower_Green.png");
 
-	gThrowResultBackTexture.Load("");
-
 	gPauseBack.Load("PauseMenuBack.png");
 	gPauseButtonBack.Load("PauseButton.png");
 	gPauseButtonBack_Select.Load("PauseButton_Select.png");
 
 	//暗幕アルファ値の初期化
 	gBlackCurtainAlpha = 255;
+	gbPause = false;
+	gCurrentMenuNum = 0;
 }
 bool CGameUIManager::GameStartAnim() {
-	gBlackCurtainAlpha -= 2;
+	gBlackCurtainAlpha -= 3;
 	//暗幕が上がりきっていたら終了を通知する
 	if (gBlackCurtainAlpha <= 0)
 	{
@@ -54,7 +53,7 @@ bool CGameUIManager::GameStartAnim() {
 }
 
 bool CGameUIManager::GameEndAnim() {
-	gBlackCurtainAlpha += 2;
+	gBlackCurtainAlpha += 3;
 	//暗幕が上がりきっていたら終了を通知する
 	if (gBlackCurtainAlpha > 255)
 	{
@@ -71,11 +70,11 @@ void CGameUIManager::UpdateUI() {
 void CGameUIManager::UpdatePauseMenu() {
 	if (g_pInput->IsKeyPush(MOFKEY_UPARROW))
 	{
-		gCurrentMenuNum++;
+		gCurrentMenuNum--;
 	}
 	else if (g_pInput->IsKeyPush(MOFKEY_DOWNARROW))
 	{
-		gCurrentMenuNum--;
+		gCurrentMenuNum++;
 	}
 	//値を0～2の範囲に調整
 	gCurrentMenuNum = (std::max)(gCurrentMenuNum, 0);
@@ -100,7 +99,7 @@ void CGameUIManager::RenderUI(int fcount, int fmaxcount, Result *result) {
 	//スコア、風、花の描画
 	gScoreBackTexture.Render(10, 10);
 	char str[256];
-	sprintf(str, "Score : %d", result->score);
+	sprintf(str, "Tabキーでポーズ\nSpaceキーでパワーを決定\nScore : %d", result->score);
 	gScoreFont.RenderString(40, 40, str);
 	gWindIconTexture.Render(10, 200);
 	gFlowerIconBackTexture.RenderScale
@@ -121,7 +120,32 @@ void CGameUIManager::RenderUI(int fcount, int fmaxcount, Result *result) {
 	//ポーズ画面を開いているときのポーズメニュー描画
 	if (gbPause)
 	{
-
+		gPauseBack.Render(400, 150);
+		for (int i = 0; i < 3; i++)
+		{
+			if (i == gCurrentMenuNum)
+			{
+				gPauseButtonBack_Select.Render((ScreenWidth - gPauseButtonBack_Select.GetWidth()) / 2,
+					(ScreenHeight - gPauseButtonBack_Select.GetHeight()) / 2 + i * 100);
+			}
+			else
+			{
+				gPauseButtonBack.Render((ScreenWidth - gPauseButtonBack.GetWidth()) / 2,
+					(ScreenHeight - gPauseButtonBack.GetHeight()) / 2 + i * 100);
+			}
+			switch (i)
+			{
+			case 0:
+				gPauseMenuFont.RenderString(700, 440, "ゲームに戻る");
+				break;
+			case 1:
+				gPauseMenuFont.RenderString(700, 540, "リトライ");
+				break;
+			case 2:
+				gPauseMenuFont.RenderString(700, 640, "タイトルへ戻る");
+				break;
+			}
+		}
 	}
 
 	//暗幕の描画
@@ -134,7 +158,6 @@ void CGameUIManager::ReleaseUI() {
 	gFlowerIconTexture[0].Release();
 	gFlowerIconTexture[1].Release();
 	gFlowerIconTexture[2].Release();
-	gThrowResultBackTexture.Release();
 	gPauseBack.Release();
 	gPauseButtonBack.Release();
 	gPauseButtonBack_Select.Release();

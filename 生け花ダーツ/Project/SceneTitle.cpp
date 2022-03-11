@@ -53,6 +53,7 @@ void CSceneTitle::LoadText()
 }
 
 void CSceneTitle::Initialize() {
+	g_pGraphics->SetScreenSize(1024, 768);
 	//テクスチャ読み込み
 	m_titleLogo.Load("Texture\\TitleLogo.png");
 	m_titleBack.Load("Texture\\TitleBack.png");

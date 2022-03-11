@@ -32,13 +32,6 @@
 		int*		FlowerColor;
 	}Result;
 
-	typedef struct s_Wind			//風データ
-	{
-		int				gWindDirect;
-		int				gWindPower;
-		CVector3		gWindPowerToVector;
-	}Wind;
-
 	const float TargetPoint[3] = { 50, 70, 100 };		//得点
 
 	enum PauseMenu 

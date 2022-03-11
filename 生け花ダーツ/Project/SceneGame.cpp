@@ -3,13 +3,17 @@
 
 CSceneGame::CSceneGame() :
 	gGamePhase(SS_INTRO),
-	gCurrentFlowerCount(0)
+	gCurrentFlowerCount(0),
+	gThrowPower(0.0f),
+	gbIsThrowing(false),
+	gbPowerPlus(false)
 {}
 
 void CSceneGame::Initialize() {
+	g_pGraphics->SetScreenSize(1600, 900);
+
 	//スコア、風データの初期化
 	gScoreResult = Result{0, new CVector3[FLOWERCOUNT], new int[FLOWERCOUNT]};
-	gWind = new Wind[FLOWERCOUNT]{ 0, 0, CVector3(0, 0, 0) };
 	//乱数の初期化
 	std::srand(time(NULL));
 	//花の初期化
@@ -18,15 +22,7 @@ void CSceneGame::Initialize() {
 		//スコア記録用構造体を初期化
 		gScoreResult.FlowerPos[i] = CVector3(0, 0, 0);
 		gScoreResult.FlowerColor[i] = rand() % FLOWERTYPE_COUNT;
-
-		//方向と速度をランダムで算出し、記録する
-		gWind[i].gWindDirect = rand() % WINDDIRECT_COUNT;
-		int wPower = rand() % MAXWINDPOWER;
-		gWind[i].gWindPower = wPower;
-		gWind[i].gWindPowerToVector
-			= CVector3(wPower * cos(45 * gWind[i].gWindDirect), wPower * sin(45 * gWind[i].gWindDirect), 0);
 	}
-
 	gGamePhase = SS_INTRO;
 	gCurrentFlowerCount = 0;
 	gGameUIManager.Initialize();
@@ -47,6 +43,7 @@ void CSceneGame::Update() {
 		//Tabキーでポーズ画面へ
 		if (g_pInput->IsKeyPush(MOFKEY_TAB))
 		{
+			gGameUIManager.OpenPauseMenu();
 			gGamePhase = SS_PAUSE;
 			return;
 		}
@@ -81,26 +78,6 @@ void CSceneGame::Update() {
 			//投げ終わったら「THROWING」フェーズへ移行
 
 		}
-		else
-		{
-			//花移動処理
-			if (g_pInput->IsKeyHold(MOFKEY_UPARROW))
-			{
-
-			}
-			else if (g_pInput->IsKeyHold(MOFKEY_UPARROW))
-			{
-
-			}
-			if (g_pInput->IsKeyHold(MOFKEY_RIGHTARROW))
-			{
-
-			}
-			else if (g_pInput->IsKeyHold(MOFKEY_LEFTARROW))
-			{
-
-			}
-		}
 		break;
 	case SS_PAUSE:
 		//ポーズ中処理
@@ -125,6 +102,7 @@ void CSceneGame::Update() {
 		break;
 	case SS_THROWING:
 		//投てき中処理
+
 		break;
 	case SS_WAITTHROWRESULT:
 		//投てき終了時処理
@@ -136,6 +114,10 @@ void CSceneGame::Update() {
 		{
 			gGamePhase = SS_GAMEEND;
 		}
+		break;
+
+	case SS_GAMERESULT:
+		//gGameUIManager.SlideIn();
 		break;
 
 	case SS_GAMEEND:
@@ -154,6 +136,7 @@ void CSceneGame::Update() {
 		if (gGameUIManager.GameEndAnim())
 		{
 			gGamePhase = SS_INTRO;
+			this->Release();
 			this->Initialize();
 		}
 		break;

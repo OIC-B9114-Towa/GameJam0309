@@ -18,6 +18,7 @@ private:
 		SS_PAUSE,
 		SS_THROWING,
 		SS_WAITTHROWRESULT,
+		SS_GAMERESULT,
 		SS_GAMEEND,
 		SS_RETRY,
 
@@ -27,7 +28,6 @@ private:
 	CGameUIManager gGameUIManager;
 
 	Result		gScoreResult;
-	Wind*		gWind;
 
 	int			gGamePhase;							//ÉQÅ[ÉÄèÛãµ
 	int			gCurrentFlowerCount;				//åªç›ìäÇ∞ÇΩâ‘ÇÃñ{êî

@@ -10,6 +10,7 @@
 //INCLUDE
 #include	"GameApp.h"
 #include	"SceneFactory.h"
+#include	"InGameData.h"
 
 CSceneBase* g_pScene = NULL;
 
@@ -28,7 +29,7 @@ MofBool CGameApp::Initialize(void){
 
 	CSceneFactory factory;
 
-	g_pScene = factory.CreateScene(SceneType::SCENETYPE_GAME);
+	g_pScene = factory.CreateScene(SceneType::SCENETYPE_TITLE);
 	g_pScene->Initialize();
 
 	return TRUE;
