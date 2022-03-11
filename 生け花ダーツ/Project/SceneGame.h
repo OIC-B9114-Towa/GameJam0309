@@ -49,7 +49,7 @@ private:
 	void UpdateSS_RETRY();
 
 #pragma region ‘å–ì’S“–
-	CFlower m_Flower;
+	CFlower m_Flower[FLOWERCOUNT];
 	CTarget m_Target[5];
 
 	//ƒJƒƒ‰

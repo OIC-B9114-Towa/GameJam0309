@@ -1,16 +1,5 @@
 #pragma once
-#include "FlowerPartsStatus.h"
-
-typedef struct tag_PartsSet
-{
-	int Count;
-	FlowerPartsStatus Parts[30];
-
-	tag_PartsSet() :
-		Count(0),
-		Parts() {
-	}
-}PartsSet;
+#include "FlowerPartsLoder.h"
 
 class CFlower
 {
@@ -45,7 +34,7 @@ private:
 public:
 	CFlower();
 	~CFlower();
-	bool Load();
+	bool Load(PartsSet set);
 	void Initialize();
 	void Update();
 	void Fire();

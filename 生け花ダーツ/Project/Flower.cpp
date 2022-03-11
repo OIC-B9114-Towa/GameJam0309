@@ -19,53 +19,8 @@ CFlower::~CFlower() {
 
 }
 
-bool CFlower::Load() {
-	FILE* fp = fopen("BoxStatus.txt", "rb");
-	if (!fp) { return false; }
-
-	fseek(fp, 0, SEEK_END);
-	long fSize = ftell(fp);
-	fseek(fp, 0, SEEK_SET);
-	//ファイルサイズ分だけのメモリを確保する
-	char* pBuffer = (char*)malloc(fSize + 1);
-	//ファイルを全てバッファに読み込む
-	fSize = fread(pBuffer, 1, fSize, fp);
-	pBuffer[fSize] = '\0';
-	char* pstr;
-
-	pstr = strtok(pBuffer, ",");
-
-	m_Parts.Count = atoi(pstr);
-	pstr = strtok(NULL, ",");
-
-	m_Parts.Count = min(30, m_Parts.Count);
-
-	for (int i = 0; i < m_Parts.Count; i++)
-	{
-		m_Parts.Parts[i].PartsNo = i;
-		m_Parts.Parts[i].Scale.x = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Scale.y = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Scale.z = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Translate.x = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Translate.y = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Translate.z = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Color.x = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Color.y = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Color.z = atof(pstr);
-		pstr = strtok(NULL, ",");
-		m_Parts.Parts[i].Color.w = 1;
-	}
-
-	fclose(fp);
-	free(pBuffer);
+bool CFlower::Load(PartsSet set) {
+	m_Parts = set;
 	return true;
 }
 
