@@ -6,15 +6,18 @@ typedef struct tag_PartsSet
 	int Count;
 	FlowerPartsStatus Parts[30];
 
-	tag_PartsSet():
+	tag_PartsSet() :
 		Count(0),
-		Parts()	{
+		Parts() {
 	}
 }PartsSet;
 
 class CFlower
 {
 private:
+	int m_HitBlockNo;
+	CVector3 m_GapPos;
+
 	CCamera	m_Camera;
 	float m_CameraAngle;
 
@@ -46,15 +49,17 @@ public:
 	void Initialize();
 	void Update();
 	void Fire();
-	void Hit();
+	void Hit(int no, CVector3 pos);
 	void UpdateDebug();
 	void Render();
+	void Render(CVector3 pos);
 	void RenderDebug();
 	void Release();
 
 	void SetCameraEnable();
 
 	bool GetFire() { return m_bFire; }
+	int GetNo() { return m_HitBlockNo; }
 
 	PartsSet GetParts() { return m_Parts; }
 	CVector3 GetPos() { return m_Pos; }

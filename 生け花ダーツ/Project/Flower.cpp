@@ -1,6 +1,8 @@
 #include "Flower.h"
 
 CFlower::CFlower() :
+	m_HitBlockNo(0),
+	m_GapPos(0,0,0),
 	m_Camera(),
 	m_CameraAngle(0),
 	m_Parts(),
@@ -70,6 +72,9 @@ bool CFlower::Load() {
 void CFlower::Initialize() {
 	InitializePos();
 	InitializeParts();
+
+	m_HitBlockNo = -1;
+	m_GapPos = CVector3(0, 0, 0);
 
 	m_vPos = CVector3(0.0135f, 23.1420f, 1.8235f);
 	m_vTrans = CVector3(0.0136f, 22.1426f, 1.859f);
@@ -146,8 +151,10 @@ void CFlower::Fire() {
 	m_bFire = true;
 }
 
-void CFlower::Hit() {
+void CFlower::Hit(int no, CVector3 pos) {
 	m_bFire = false;
+	m_HitBlockNo = no;
+	m_GapPos = m_Pos - pos;
 }
 
 void CFlower::UpdateDebug() {
@@ -210,6 +217,18 @@ void CFlower::Render() {
 	for (int i = 0; i < m_Parts.Count; i++)
 	{
 		CBoxOBB box(m_Pos + m_Parts.Parts[i].Translate, m_Parts.Parts[i].Scale, m_Rotate);
+
+		CGraphicsUtilities::RenderBox(box, m_Parts.Parts[i].Color);
+	}
+}
+
+void CFlower::Render(CVector3 pos) {
+	//様々なプリミティブを並べる
+	CMatrix44 matWorld;
+
+	for (int i = 0; i < m_Parts.Count; i++)
+	{
+		CBoxOBB box(m_GapPos + m_Parts.Parts[i].Translate + pos, m_Parts.Parts[i].Scale, m_Rotate);
 
 		CGraphicsUtilities::RenderBox(box, m_Parts.Parts[i].Color);
 	}

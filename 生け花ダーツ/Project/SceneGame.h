@@ -28,7 +28,7 @@ private:
 	void InitializeCamera();
 	void UpdateCamera();
 	void RenderUseShader();
-
+	void RenderFlower();
 public:
 	CSceneGame();
 	void Initialize(void);

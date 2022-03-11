@@ -11,9 +11,27 @@ CSceneGame::CSceneGame() :
 void CSceneGame::Initialize() {
 	m_Flower.Load();
 	m_Flower.Initialize();
+
+	TargetStatus st[5];
+	st[0].Pos = CVector3(0, 2, 1);
+	st[0].Scale = CVector3(1, 0.1f, 1);
+	st[0].bxMove = true;
+	st[1].Pos = CVector3(0, -5, 1);
+	st[1].Scale = CVector3(0.5f, 0.1f, 0.5f);
+	st[1].bzMove = true;
+	st[2].Pos = CVector3(0, 2, 1);
+	st[2].Scale = CVector3(1, 0.1f, 2);
+	st[2].byMove = true;
+	st[2].bxMove = true;
+	st[3].Pos = CVector3(0, 2, 1);
+	st[3].Scale = CVector3(2, 0.1f, 1);
+	st[3].bzMove = true;
+	st[4].Pos = CVector3(0, 2, 1);
+	st[4].Scale = CVector3(1, 0.1f, 1);
+	st[4].Pos = CVector3(0, 2, 1);
 	for (int i = 0; i < 5; i++)
 	{
-		m_Target[i].Initialize();
+		m_Target[i].Initialize(st[i]);
 	}
 	InitializeCamera();
 	//シェーダーエフェクト作成
@@ -48,7 +66,7 @@ void CSceneGame::Update() {
 	for (int i = 0; i < 5; i++)
 	{
 		m_Target[i].Update();
-		m_Target[i].Collision(m_Flower);
+		m_Target[i].Collision(m_Flower, i);
 	}
 	//UpdateCamera();
 }
@@ -147,11 +165,11 @@ void CSceneGame::Render() {
 	{
 		//床描画用行列
 		CMatrix44 matPlane;
-		matPlane.Scaling(50.0f);
+		//matPlane.Scaling(50.0f);
 		//床描画
 		CGraphicsUtilities::RenderPlane(matPlane);
 		//シーン描画
-		m_Flower.Render();
+		RenderFlower();
 		for (int i = 0; i < 5; i++)
 		{
 			m_Target[i].Render();
@@ -176,9 +194,9 @@ void CSceneGame::RenderUseShader() {
 	{
 		g_pGraphics->ClearTarget();
 
-		CGraphicsUtilities::RenderPlane(matPlane);
+		//CGraphicsUtilities::RenderPlane(matPlane);
 
-		m_Flower.Render();
+		RenderFlower();
 		for (int i = 0; i < 5; i++)
 		{
 			m_Target[i].Render();
@@ -192,15 +210,23 @@ void CSceneGame::RenderUseShader() {
 	{
 		g_pGraphics->ClearTarget(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0);
 		//床描画
-		CGraphicsUtilities::RenderPlane(matPlane);
+		//CGraphicsUtilities::RenderPlane(matPlane);
 		//シーン描画
-		m_Flower.Render();
+		RenderFlower();
 		for (int i = 0; i < 5; i++)
 		{
 			m_Target[i].Render();
 		}
 	}
 	m_ShadowMap.EndRenderer();
+}
+
+void CSceneGame::RenderFlower() {
+	int no = m_Flower.GetNo();
+	if (no != -1)
+		m_Flower.Render(m_Target[no].GetPos());
+	else
+		m_Flower.Render();
 }
 
 void CSceneGame::RenderDebug() {

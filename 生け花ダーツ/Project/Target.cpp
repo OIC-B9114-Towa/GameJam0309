@@ -1,42 +1,47 @@
 #include "Target.h"
 
 CTarget::CTarget() :
-	m_Pos(),
-	m_Scale(),
+	m_Status(),
 	m_Rotate(),
-	m_bLeftMove(true),
+	m_bXPlusMove(true),
+	m_bYPlusMove(true),
+	m_bZPlusMove(true),
 	m_bMove(true) {
-
 }
 
 CTarget::~CTarget() {
 
 }
 
-void CTarget::Initialize() {
-	m_Scale = CVector3(2, 0.1f, 2);
+void CTarget::Initialize(TargetStatus st) {
+	m_Status = st;
 	m_Rotate = CVector3(0, 0, 0);
-	m_Pos = CVector3(0, 2, 1);
 	m_bMove = true;
 }
 
 void CTarget::Update() {
 	if (!m_bMove) { return; }
-	m_Rotate.y += 0.065f;
-	if (m_bLeftMove)
+	Move(m_Status.bxMove, m_bXPlusMove, m_Status.Pos.x);
+	Move(m_Status.byMove, m_bYPlusMove, m_Status.Pos.y);
+	Move(m_Status.bzMove, m_bZPlusMove, m_Status.Pos.z);
+}
+
+void CTarget::Move(bool bcan, bool& bmove, float& pos) {
+	if (!bcan) { return; }
+	if (bmove)
 	{
-		m_Pos.x -= 0.1f;
-		if (m_Pos.x < -5.0f)
+		pos -= 0.1f;
+		if (pos < -8.0f)
 		{
-			m_bLeftMove = false;
+			bmove = false;
 		}
 	}
 	else
 	{
-		m_Pos.x += 0.1f;
-		if (m_Pos.x > 5.0f)
+		pos += 0.1f;
+		if (pos > 8.0f)
 		{
-			m_bLeftMove = true;
+			bmove = true;
 		}
 	}
 }
@@ -45,27 +50,27 @@ void CTarget::UpdateDebug() {
 	float speed = 0.125f;
 	if (g_pInput->IsKeyHold(MOFKEY_Q))
 	{
-		m_Pos.x += speed;
+		m_Status.Pos.x += speed;
 	}
 	if (g_pInput->IsKeyHold(MOFKEY_A))
 	{
-		m_Pos.x -= speed;
+		m_Status.Pos.x -= speed;
 	}
 	if (g_pInput->IsKeyHold(MOFKEY_W))
 	{
-		m_Pos.y += speed;
+		m_Status.Pos.y += speed;
 	}
 	if (g_pInput->IsKeyHold(MOFKEY_S))
 	{
-		m_Pos.y -= speed;
+		m_Status.Pos.y -= speed;
 	}
 	if (g_pInput->IsKeyHold(MOFKEY_E))
 	{
-		m_Pos.z += speed;
+		m_Status.Pos.z += speed;
 	}
 	if (g_pInput->IsKeyHold(MOFKEY_D))
 	{
-		m_Pos.z -= speed;
+		m_Status.Pos.z -= speed;
 	}
 
 	if (g_pInput->IsKeyHold(MOFKEY_U))
@@ -94,24 +99,24 @@ void CTarget::UpdateDebug() {
 	}
 }
 
-void CTarget::Collision(CFlower& flower) {
+void CTarget::Collision(CFlower& flower, int no) {
+	if (!flower.GetFire()) { return; }
 	PartsSet parts = flower.GetParts();
 
-	CBoxOBB box(m_Pos, m_Scale, m_Rotate);
+	CBoxOBB box(m_Status.Pos, m_Status.Scale, m_Rotate);
 	for (int i = 0; i < parts.Count; i++)
 	{
 		CBoxOBB fbox(parts.Parts[i].Translate + flower.GetPos(), parts.Parts[i].Scale, CVector3(0, 0, 0));
 		if (box.CollisionOBB(fbox))
 		{
-			flower.Hit();
-			m_bMove = false;
+			flower.Hit(no, m_Status.Pos);
 			return;
 		}
 	}
 }
 
 void CTarget::Render() {
-	CBoxOBB box(m_Pos, m_Scale, m_Rotate);
+	CBoxOBB box(m_Status.Pos, m_Status.Scale, m_Rotate);
 
 	CVector4 color(0, 1, 0, 1);
 	CGraphicsUtilities::RenderBox(box, color);
