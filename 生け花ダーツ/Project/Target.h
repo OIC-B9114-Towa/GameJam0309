@@ -44,7 +44,7 @@ public:
 	void Initialize(TargetStatus st);
 	void Update();
 	void UpdateDebug();
-	void Collision(CFlower& flower, int no);
+	bool Collision(CFlower& flower, int no);
 	void Render();
 	void RenderDebug();
 	void Release();

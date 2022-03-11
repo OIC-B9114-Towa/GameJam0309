@@ -99,8 +99,8 @@ void CTarget::UpdateDebug() {
 	}
 }
 
-void CTarget::Collision(CFlower& flower, int no) {
-	if (!flower.GetFire()) { return; }
+bool CTarget::Collision(CFlower& flower, int no) {
+	if (!flower.GetFire()) { return false; }
 	PartsSet parts = flower.GetParts();
 
 	CBoxOBB box(m_Status.Pos, m_Status.Scale, m_Rotate);
@@ -110,9 +110,10 @@ void CTarget::Collision(CFlower& flower, int no) {
 		if (box.CollisionOBB(fbox))
 		{
 			flower.Hit(no, m_Status.Pos);
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 void CTarget::Render() {

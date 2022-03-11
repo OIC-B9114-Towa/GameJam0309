@@ -70,7 +70,6 @@ void CFlower::InitializePos() {
 }
 
 void CFlower::Update() {
-	UpdateCamera();
 	if (!m_bFire) { return; }
 
 	float speed = 0.2f;
@@ -81,25 +80,6 @@ void CFlower::Update() {
 	m_Pos.z += m_MoveZ;
 
 	m_Life--;
-	if (m_Life < 0)
-	{
-		InitializePos();
-	}
-
-}
-
-void CFlower::UpdateCamera() {
-	//ƒJƒƒ‰‚ÌÝ’è
-	CVector3 cpos = m_Pos;
-	CVector3 tpos = m_Pos;
-	CVector3 fvec(0, 0, -1);
-	fvec.RotationY(m_CameraAngle);
-	cpos.y += 3.0f;
-	cpos -= fvec * 3.2f;
-	tpos += fvec * 1.5f;
-	tpos.y += -1;
-	m_Camera.LookAt(cpos, tpos, CVector3(0, 1, 0));
-	m_Camera.Update();
 }
 
 void CFlower::Fire() {

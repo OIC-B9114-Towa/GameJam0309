@@ -82,7 +82,7 @@ MofBool CGameApp::Render(void){
 	//描画開始
 	g_pGraphics->RenderStart();
 	//画面のクリア
-	g_pGraphics->ClearTarget(0.0f,0.0f,1.0f,1.0f,1.0f,0);
+	g_pGraphics->ClearTarget(0.8f,0.8f,0.8f,1.0f,1.0f,0);
 
 	g_pScene->Render();
 	if (g_bDebug)

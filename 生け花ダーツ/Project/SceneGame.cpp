@@ -34,22 +34,20 @@ void CSceneGame::Initialize() {
 	}
 
 	TargetStatus st[5];
-	st[0].Pos = CVector3(0, 2, 1);
-	st[0].Scale = CVector3(1, 0.1f, 1);
-	st[0].bxMove = true;
-	st[1].Pos = CVector3(0, -5, 1);
-	st[1].Scale = CVector3(0.5f, 0.1f, 0.5f);
-	st[1].bzMove = true;
-	st[2].Pos = CVector3(0, 2, 1);
-	st[2].Scale = CVector3(1, 0.1f, 2);
-	st[2].byMove = true;
-	st[2].bxMove = true;
-	st[3].Pos = CVector3(0, 2, 1);
-	st[3].Scale = CVector3(2, 0.1f, 1);
-	st[3].bzMove = true;
-	st[4].Pos = CVector3(0, 2, 1);
-	st[4].Scale = CVector3(1, 0.1f, 1);
-	st[4].Pos = CVector3(0, 2, 1);
+
+	for (int i = 0; i < 5; i++)
+	{
+		st[i].Pos.x = rand() % 10 - 5;
+		st[i].Pos.y = rand() % 6 - 3;
+		st[i].Pos.z = rand() % 10 - 5;
+		st[i].Scale.x = rand() % 3 + 1;
+		st[i].Scale.y = float(rand() % 3 + 1) / 10;
+		st[i].Scale.z = rand() % 3 + 1;
+		st[i].bxMove = (rand() % 2 == 0) ? true : false;
+		st[i].byMove = (rand() % 2 == 0) ? true : false;
+		st[i].bzMove = (rand() % 2 == 0) ? true : false;
+		st[i].Score = (rand() % 10 + 10) * 5;
+	}
 	for (int i = 0; i < 5; i++)
 	{
 		m_Target[i].Initialize(st[i]);
@@ -191,9 +189,19 @@ void CSceneGame::UpdateSS_PAUSE() {
 
 void CSceneGame::UpdateSS_THROWING() {
 	m_Flower[gCurrentFlowerCount].Update();
+	if (m_Flower[gCurrentFlowerCount].IsDead())
+	{
+		gGamePhase = SS_WAITTHROWRESULT;
+		return;
+	}
 	for (int i = 0; i < 5; i++)
 	{
-		m_Target[i].Collision(m_Flower[gCurrentFlowerCount], i);
+		if (m_Target[i].Collision(m_Flower[gCurrentFlowerCount], i))
+		{
+			gScoreResult.score += m_Target[i].GetScore();
+			gGamePhase = SS_WAITTHROWRESULT;
+			return;
+		}
 	}
 }
 
@@ -202,8 +210,10 @@ void CSceneGame::UpdateSS_WAITTHROWRESULT() {
 	gCurrentFlowerCount++;
 	if (gCurrentFlowerCount >= FLOWERCOUNT)
 	{
-		gGamePhase = SS_GAMEEND;
+		gGamePhase = SS_GAMERESULT;
+		return;
 	}
+	gGamePhase = SS_WAITTHROW;
 }
 
 void CSceneGame::UpdateSS_GAMERESULT() {
@@ -302,7 +312,7 @@ void CSceneGame::RenderUseShader() {
 
 	m_ShadowMap.BeginRenderer();
 	{
-		g_pGraphics->ClearTarget(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0);
+		g_pGraphics->ClearTarget(0.9f, 0.9f, 0.9f, 0.0f, 1.0f, 0);
 		//è∞ï`âÊ
 		//CGraphicsUtilities::RenderPlane(matPlane);
 		//ÉVÅ[Éìï`âÊ
@@ -316,7 +326,8 @@ void CSceneGame::RenderUseShader() {
 }
 
 void CSceneGame::RenderFlower() {
-	for (int i = 0; i <= gCurrentFlowerCount; i++)
+	int cnt = min(FLOWERCOUNT - 1, gCurrentFlowerCount);
+	for (int i = 0; i <= cnt; i++)
 	{
 		int no = m_Flower[i].GetNo();
 		if (no != -1)

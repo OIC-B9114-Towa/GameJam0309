@@ -29,8 +29,6 @@ private:
 	void InitializeParts();
 	void InitializePos();
 
-	void UpdateCamera();
-
 public:
 	CFlower();
 	~CFlower();
@@ -49,6 +47,7 @@ public:
 
 	bool GetFire() { return m_bFire; }
 	int GetNo() { return m_HitBlockNo; }
+	bool IsDead() { return (m_Life < 0) ? true : false; }
 
 	PartsSet GetParts() { return m_Parts; }
 	CVector3 GetPos() { return m_Pos; }
