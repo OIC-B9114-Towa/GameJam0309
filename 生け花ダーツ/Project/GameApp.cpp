@@ -13,7 +13,7 @@
 
 CSceneBase* g_pScene = NULL;
 
-bool		g_bDebug = false;
+bool		g_bDebug = true;
 
 /*************************************************************************//*!
 		@brief			アプリケーションの初期化
