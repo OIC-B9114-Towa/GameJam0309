@@ -21,7 +21,7 @@ void CSceneOption::Render() {
 }
 
 void CSceneOption::RenderDebug() {
-
+	CGraphicsUtilities::RenderString(0, 0, MOF_COLOR_BLACK, "ƒIƒvƒVƒ‡ƒ“‰æ–Ê");
 }
 
 void CSceneOption::Release() {

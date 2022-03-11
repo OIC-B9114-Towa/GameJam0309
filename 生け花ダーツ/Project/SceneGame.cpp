@@ -1,4 +1,5 @@
 #include "SceneGame.h"
+#include <ctime>
 
 CSceneGame::CSceneGame() :
 	gGamePhase(SS_INTRO),

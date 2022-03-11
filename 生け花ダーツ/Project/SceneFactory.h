@@ -2,6 +2,7 @@
 #include "SceneTitle.h"
 #include "SceneGame.h"
 #include "SceneOption.h"
+#include "SceneCollection.h"
 
 class CSceneFactory
 {
@@ -15,6 +16,8 @@ public:
 			return new CSceneGame();
 		case SCENETYPE_OPTION:
 			return new CSceneOption();
+		case SCENETYPE_COLLECTION:
+			return new CSceneCollection();
 		default:
 			break;
 		}
