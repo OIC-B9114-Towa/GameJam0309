@@ -1,6 +1,7 @@
 #pragma once
 #include <Mof.h>
 #include "SceneType.h"
+#include "SoundManager.h"
 
 class CSceneBase
 {

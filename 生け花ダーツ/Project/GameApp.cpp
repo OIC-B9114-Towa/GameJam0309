@@ -26,9 +26,10 @@ MofBool CGameApp::Initialize(void){
 	//リソース配置ディレクトリの設定
 	CUtilities::SetCurrentDirectory("Resource");
 
+	CSoundManager::GetInstance().Load();
 	CSceneFactory factory;
 
-	g_pScene = factory.CreateScene(SceneType::SCENETYPE_TITLE);
+	g_pScene = factory.CreateScene(SceneType::SCENETYPE_OPTION);
 	g_pScene->Initialize();
 
 	return TRUE;
@@ -107,5 +108,6 @@ MofBool CGameApp::Release(void){
 		delete g_pScene;
 		g_pScene = NULL;
 	}
+	CSoundManager::GetInstance().Release();
 	return TRUE;
 }
