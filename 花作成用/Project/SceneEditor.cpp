@@ -327,12 +327,12 @@ void CSceneEditor::RenderScene() {
 
 	for (int i = 0; i < m_BoxStatus.size(); i++)
 	{
-		matWorld.Scaling(m_BoxStatus[i].Scale);
-		matWorld.SetTranslation(m_BoxStatus[i].Translate);
-		CVector4 col = m_BoxStatus[i].Color;
-		if (m_bTranslucent && i != m_SelectPartsNo)
-			col.w = 0.3f;
-		CGraphicsUtilities::RenderBox(matWorld, col);
+		CBoxOBB box(m_BoxStatus[i].Translate, m_BoxStatus[i].Scale, CVector3(0, 0, 0));
+
+		CVector4 color = m_BoxStatus[i].Color;
+		if (m_SelectPartsNo != i && m_bTranslucent)
+			color.w = 0.3f;
+		CGraphicsUtilities::RenderBox(box, color);
 	}
 }
 
