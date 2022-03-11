@@ -101,6 +101,7 @@
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneOption.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="Target.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +114,7 @@
     <ClInclude Include="SceneOption.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="SceneType.h" />
+    <ClInclude Include="Target.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

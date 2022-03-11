@@ -1,15 +1,21 @@
 #pragma once
 #include "SceneBase.h"
 #include "Flower.h"
+#include "Target.h"
 #include	<Graphics/ShaderEffect_ShadowMap.h>
 
 class CSceneGame : public CSceneBase
 {
 private:
 	CFlower m_Flower;
+	CTarget m_Target[5];
 
 	//カメラ
 	CCamera						m_Camera;
+
+	CVector3 m_vPos;
+	CVector3 m_vTrans;
+
 	//カメラ角度
 	CVector3					m_CamAngle;
 	//ライト

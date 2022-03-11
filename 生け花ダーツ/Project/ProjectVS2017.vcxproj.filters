@@ -48,6 +48,9 @@
     <ClCompile Include="Flower.cpp">
       <Filter>ソース ファイル\Flower</Filter>
     </ClCompile>
+    <ClCompile Include="Target.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="FlowerPartsStatus.h">
       <Filter>ヘッダー ファイル\Flower</Filter>
+    </ClInclude>
+    <ClInclude Include="Target.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

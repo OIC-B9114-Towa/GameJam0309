@@ -1,13 +1,20 @@
 #include "SceneGame.h"
 
-CSceneGame::CSceneGame():
-m_Flower(){
+CSceneGame::CSceneGame() :
+	m_Flower(),
+	m_Target(),
+	m_vPos(),
+	m_vTrans() {
 
 }
 
 void CSceneGame::Initialize() {
 	m_Flower.Load();
 	m_Flower.Initialize();
+	for (int i = 0; i < 5; i++)
+	{
+		m_Target[i].Initialize();
+	}
 	InitializeCamera();
 	//シェーダーエフェクト作成
 	m_ShadowMap.Create(2048);
@@ -16,9 +23,11 @@ void CSceneGame::Initialize() {
 }
 
 void CSceneGame::InitializeCamera() {
+	m_vPos = CVector3(0.0135f, 23.1420f, 1.8235f);
+	m_vTrans = CVector3(0.0136f, 22.1426f, 1.859f);
 	//カメラ初期化
 	m_Camera.SetViewPort();
-	m_Camera.LookAt(Vector3(0.0f, 3.0f, -2.0f), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	m_Camera.LookAt(m_vPos, m_vTrans, Vector3(0, 1, 0));
 	m_Camera.PerspectiveFov(MOF_ToRadian(60.0f), 1024.0f / 768.0f, 0.01f, 1000.0f);
 	m_Camera.Update();
 	CGraphicsUtilities::SetCamera(&m_Camera);
@@ -31,8 +40,16 @@ void CSceneGame::InitializeCamera() {
 }
 
 void CSceneGame::Update() {
+	if (g_pInput->IsKeyPush(MOFKEY_RETURN))
+	{
+		m_Flower.Fire();
+	}
 	m_Flower.Update();
-	UpdateCamera();
+	m_Target.Update();
+
+	m_Target.Collision(m_Flower);
+
+	//UpdateCamera();
 }
 
 void CSceneGame::UpdateCamera() {
@@ -89,20 +106,32 @@ void CSceneGame::UpdateCamera() {
 	}
 
 	vMove.TransformCoord(matRot, vMove);
-	CVector3 vPos = m_Camera.GetViewPosition() + vMove;
+	m_vPos = m_Camera.GetViewPosition() + vMove;
+	m_vTrans = m_vPos + vFront;
 
 	//カメラ更新
-	m_Camera.LookAt(vPos, vPos + vFront, Vector3(0, 1, 0));
+	m_Camera.LookAt(m_vPos, m_vTrans, Vector3(0, 1, 0));
 	m_Camera.Update();
 }
 
 void CSceneGame::UpdateDebug() {
 	m_Flower.UpdateDebug();
+	m_Target.UpdateDebug();
 }
 
 void CSceneGame::Render() {
 	//深度バッファ有効化
 	g_pGraphics->SetDepthEnable(TRUE);
+
+	if (m_Flower.GetFire())
+	{
+		//プレイヤーのカメラを有効にする
+		//m_Flower.SetCameraEnable();
+	}
+	else
+	{
+		CGraphicsUtilities::SetCamera(&m_Camera);
+	}
 
 	//シェーダーエフェクトを使って描画
 	if (m_EffectEnabled)
@@ -119,6 +148,7 @@ void CSceneGame::Render() {
 		CGraphicsUtilities::RenderPlane(matPlane);
 		//シーン描画
 		m_Flower.Render();
+		m_Target.Render();
 	}
 	g_pGraphics->SetDepthEnable(FALSE);
 
@@ -142,6 +172,7 @@ void CSceneGame::RenderUseShader() {
 		CGraphicsUtilities::RenderPlane(matPlane);
 
 		m_Flower.Render();
+		m_Target.Render();
 	}
 	m_ShadowMap.EndTexture();
 
@@ -154,12 +185,19 @@ void CSceneGame::RenderUseShader() {
 		CGraphicsUtilities::RenderPlane(matPlane);
 		//シーン描画
 		m_Flower.Render();
+		m_Target.Render();
 	}
 	m_ShadowMap.EndRenderer();
 }
 
 void CSceneGame::RenderDebug() {
 	CGraphicsUtilities::RenderString(10, 130, "Debug : ON");
+	m_Flower.RenderDebug();
+	m_Target.RenderDebug();
+
+
+	CGraphicsUtilities::RenderString(10, 154, "vPos x : %f, y : %f, z : %f", m_vPos.x, m_vPos.y, m_vPos.z);
+	CGraphicsUtilities::RenderString(10, 178, "vTrans x : %f, y : %f, z : %f", m_vTrans.x, m_vTrans.y, m_vTrans.z);
 }
 
 void CSceneGame::Release() {
