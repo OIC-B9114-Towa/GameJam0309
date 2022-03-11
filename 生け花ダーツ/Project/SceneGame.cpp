@@ -45,10 +45,11 @@ void CSceneGame::Update() {
 		m_Flower.Fire();
 	}
 	m_Flower.Update();
-	m_Target.Update();
-
-	m_Target.Collision(m_Flower);
-
+	for (int i = 0; i < 5; i++)
+	{
+		m_Target[i].Update();
+		m_Target[i].Collision(m_Flower);
+	}
 	//UpdateCamera();
 }
 
@@ -116,7 +117,10 @@ void CSceneGame::UpdateCamera() {
 
 void CSceneGame::UpdateDebug() {
 	m_Flower.UpdateDebug();
-	m_Target.UpdateDebug();
+	for (int i = 0; i < 5; i++)
+	{
+		m_Target[i].UpdateDebug();
+	}
 }
 
 void CSceneGame::Render() {
@@ -148,7 +152,10 @@ void CSceneGame::Render() {
 		CGraphicsUtilities::RenderPlane(matPlane);
 		//ƒV[ƒ“•`‰æ
 		m_Flower.Render();
-		m_Target.Render();
+		for (int i = 0; i < 5; i++)
+		{
+			m_Target[i].Render();
+		}
 	}
 	g_pGraphics->SetDepthEnable(FALSE);
 
@@ -172,7 +179,10 @@ void CSceneGame::RenderUseShader() {
 		CGraphicsUtilities::RenderPlane(matPlane);
 
 		m_Flower.Render();
-		m_Target.Render();
+		for (int i = 0; i < 5; i++)
+		{
+			m_Target[i].Render();
+		}
 	}
 	m_ShadowMap.EndTexture();
 
@@ -185,7 +195,10 @@ void CSceneGame::RenderUseShader() {
 		CGraphicsUtilities::RenderPlane(matPlane);
 		//ƒV[ƒ“•`‰æ
 		m_Flower.Render();
-		m_Target.Render();
+		for (int i = 0; i < 5; i++)
+		{
+			m_Target[i].Render();
+		}
 	}
 	m_ShadowMap.EndRenderer();
 }
@@ -193,8 +206,10 @@ void CSceneGame::RenderUseShader() {
 void CSceneGame::RenderDebug() {
 	CGraphicsUtilities::RenderString(10, 130, "Debug : ON");
 	m_Flower.RenderDebug();
-	m_Target.RenderDebug();
-
+	for (int i = 0; i < 5; i++)
+	{
+		m_Target[i].RenderDebug();
+	}
 
 	CGraphicsUtilities::RenderString(10, 154, "vPos x : %f, y : %f, z : %f", m_vPos.x, m_vPos.y, m_vPos.z);
 	CGraphicsUtilities::RenderString(10, 178, "vTrans x : %f, y : %f, z : %f", m_vTrans.x, m_vTrans.y, m_vTrans.z);
