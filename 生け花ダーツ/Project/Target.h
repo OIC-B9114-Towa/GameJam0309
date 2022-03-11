@@ -50,5 +50,6 @@ public:
 	void Release();
 
 	CVector3 GetPos() { return m_Status.Pos; }
+	int GetScore() { return m_Status.Score; }
 };
 
