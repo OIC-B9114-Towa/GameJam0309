@@ -21,25 +21,25 @@ void CTarget::Initialize(TargetStatus st) {
 
 void CTarget::Update() {
 	if (!m_bMove) { return; }
-	Move(m_Status.bxMove, m_bXPlusMove, m_Status.Pos.x);
-	Move(m_Status.byMove, m_bYPlusMove, m_Status.Pos.y);
-	Move(m_Status.bzMove, m_bZPlusMove, m_Status.Pos.z);
+	Move(m_Status.bxMove, m_bXPlusMove, m_Status.Pos.x, m_Status.Speed.x, m_Status.StartPos.x, m_Status.EndPos.x);
+	Move(m_Status.byMove, m_bYPlusMove, m_Status.Pos.y, m_Status.Speed.y, m_Status.StartPos.y, m_Status.EndPos.y);
+	Move(m_Status.bzMove, m_bZPlusMove, m_Status.Pos.z, m_Status.Speed.z, m_Status.StartPos.z, m_Status.EndPos.z);
 }
 
-void CTarget::Move(bool bcan, bool& bmove, float& pos) {
+void CTarget::Move(bool bcan, bool& bmove, float& pos, float speed, float start, float end) {
 	if (!bcan) { return; }
 	if (bmove)
 	{
-		pos -= 0.1f;
-		if (pos < -8.0f)
+		pos -= speed;
+		if (pos < start)
 		{
 			bmove = false;
 		}
 	}
 	else
 	{
-		pos += 0.1f;
-		if (pos > 8.0f)
+		pos += speed;
+		if (pos > end)
 		{
 			bmove = true;
 		}
@@ -118,9 +118,7 @@ bool CTarget::Collision(CFlower& flower, int no) {
 
 void CTarget::Render() {
 	CBoxOBB box(m_Status.Pos, m_Status.Scale, m_Rotate);
-
-	CVector4 color(0, 1, 0, 1);
-	CGraphicsUtilities::RenderBox(box, color);
+	CGraphicsUtilities::RenderBox(box, m_Status.Color);
 }
 
 void CTarget::RenderDebug() {

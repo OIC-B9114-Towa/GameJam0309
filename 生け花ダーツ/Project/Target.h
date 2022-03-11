@@ -5,20 +5,28 @@ typedef struct tag_TargetStatus
 {
 	int Score;
 	CVector3 Pos;
+	CVector3 StartPos;
+	CVector3 EndPos;
 	CVector3 Scale;
 	bool bxMove;
 	bool byMove;
 	bool bzMove;
+	CVector3 Speed;
+
+
+	CVector4 Color;
 
 	tag_TargetStatus() :
 		Score(100),
-		Pos(0,0,0),
-		Scale(0,0,0),
+		Pos(0, 0, 0),
+		StartPos(0,0,0),
+		EndPos(0,0,0),
+		Scale(0, 0, 0),
+		Speed(0, 0, 0),
+		Color(0,0,0,1),
 		bxMove(false),
 		byMove(false),
-		bzMove(false)
-	{
-
+		bzMove(false){
 	}
 
 }TargetStatus;
@@ -36,7 +44,7 @@ private:
 	bool m_bYPlusMove;
 	bool m_bZPlusMove;
 
-	void Move(bool bcan, bool& bmove, float& pos);
+	void Move(bool bcan, bool& bmove, float& pos, float speed, float start, float end);
 public:
 	CTarget();
 	~CTarget();
