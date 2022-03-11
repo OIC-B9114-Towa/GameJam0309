@@ -37,16 +37,31 @@ void CSceneGame::Initialize() {
 
 	for (int i = 0; i < 5; i++)
 	{
-		st[i].Pos.x = rand() % 10 - 5;
-		st[i].Pos.y = rand() % 6 - 3;
-		st[i].Pos.z = rand() % 10 - 5;
+		st[i].Pos.x = rand() % 4 - 2;
+		st[i].Pos.y = rand() % 4 - 2;
+		st[i].Pos.z = rand() % 4 - 2;
+		st[i].StartPos.x = st[i].Pos.x - (rand() % 4 + 2);
+		st[i].StartPos.y = st[i].Pos.y - (rand() % 4 + 2);
+		st[i].StartPos.z = st[i].Pos.z - (rand() % 4 + 2);
+		st[i].EndPos.x = st[i].Pos.x + (rand() % 4 + 2);
+		st[i].EndPos.y = st[i].Pos.y + (rand() % 4 + 2);
+		st[i].EndPos.z = st[i].Pos.z + (rand() % 4 + 2);
 		st[i].Scale.x = rand() % 3 + 1;
-		st[i].Scale.y = float(rand() % 3 + 1) / 10;
 		st[i].Scale.z = rand() % 3 + 1;
+		st[i].Scale.y = float(rand() % 3 + 1) / 10;
+		st[i].Speed.x = float(rand() % 35 + 5) / 100;
+		st[i].Speed.y = float(rand() % 35 + 5) / 100;
+		st[i].Speed.z = float(rand() % 35 + 5) / 100;
 		st[i].bxMove = (rand() % 2 == 0) ? true : false;
 		st[i].byMove = (rand() % 2 == 0) ? true : false;
 		st[i].bzMove = (rand() % 2 == 0) ? true : false;
 		st[i].Score = (rand() % 10 + 10) * 5;
+		float col = rand() % 180;
+		float gcol = rand() % (255 - (int)col - 40) + (int)col + 40;
+		col /= 128;
+		st[i].Color.x = col;
+		st[i].Color.z = col;
+		st[i].Color.y = gcol / 128;
 	}
 	for (int i = 0; i < 5; i++)
 	{
