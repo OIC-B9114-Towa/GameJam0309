@@ -72,9 +72,7 @@ void CFlower::InitializePos() {
 void CFlower::Update() {
 	if (!m_bFire) { return; }
 
-	float speed = 0.2f;
-
-	m_Pos.y -= speed;
+	m_Pos.y -= m_Speed;
 	m_MoveZ = max(m_MoveZ - 0.002f, -0.02f);
 
 	m_Pos.z += m_MoveZ;
@@ -82,8 +80,9 @@ void CFlower::Update() {
 	m_Life--;
 }
 
-void CFlower::Fire() {
+void CFlower::Fire(float speed) {
 	m_bFire = true;
+	m_Speed = 0.2f * speed;
 }
 
 void CFlower::Hit(int no, CVector3 pos) {

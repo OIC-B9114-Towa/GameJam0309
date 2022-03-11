@@ -23,6 +23,7 @@ private:
 	int m_MaxLife;
 	int m_Life;
 
+	float m_Speed;
 
 	bool m_bFire;
 
@@ -35,7 +36,7 @@ public:
 	bool Load(PartsSet set);
 	void Initialize();
 	void Update();
-	void Fire();
+	void Fire(float speed);
 	void Hit(int no, CVector3 pos);
 	void UpdateDebug();
 	void Render();

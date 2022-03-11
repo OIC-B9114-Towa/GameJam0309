@@ -48,6 +48,7 @@ private:
 	void UpdateSS_GAMEEND();
 	void UpdateSS_RETRY();
 
+	float GetSpeed(int type);
 #pragma region ‘å–ì’S“–
 	CFlower m_Flower[FLOWERCOUNT];
 	CTarget m_Target[5];

@@ -160,7 +160,7 @@ void CSceneGame::UpdateSS_WAITTHROW() {
 	else if (g_pInput->IsKeyPull(MOFKEY_SPACE))
 	{
 		//投げ終わったら「THROWING」フェーズへ移行
-		m_Flower[gCurrentFlowerCount].Fire();
+		m_Flower[gCurrentFlowerCount].Fire(GetSpeed(gScoreResult.FlowerColor[gCurrentFlowerCount]));
 		gGamePhase = SS_THROWING;
 	}
 }
@@ -329,6 +329,7 @@ void CSceneGame::RenderFlower() {
 	int cnt = min(FLOWERCOUNT - 1, gCurrentFlowerCount);
 	for (int i = 0; i <= cnt; i++)
 	{
+		if (m_Flower[i].IsDead()) { continue; }
 		int no = m_Flower[i].GetNo();
 		if (no != -1)
 			m_Flower[i].Render(m_Target[no].GetPos());
@@ -353,4 +354,17 @@ void CSceneGame::Release() {
 		delete[] gScoreResult.FlowerColor;
 		gScoreResult.FlowerColor = NULL;
 	}
+}
+
+float CSceneGame::GetSpeed(int type) {
+	switch (type)
+	{
+	case 0:
+		return 1.0f;
+	case 1:
+		return 2.0f;
+	case 2:
+		return 0.6f;
+	}
+	return 1.0f;
 }
