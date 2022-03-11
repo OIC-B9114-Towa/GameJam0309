@@ -29,7 +29,7 @@ MofBool CGameApp::Initialize(void){
 
 	CSceneFactory factory;
 
-	g_pScene = factory.CreateScene(SceneType::SCENETYPE_TITLE);
+	g_pScene = factory.CreateScene(SceneType::SCENETYPE_GAME);
 	g_pScene->Initialize();
 
 	return TRUE;

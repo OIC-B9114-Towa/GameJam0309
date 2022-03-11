@@ -95,6 +95,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Flower.cpp" />
+    <ClCompile Include="FlowerPartsLoder.cpp" />
     <ClCompile Include="GameUIManager.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="InGameData.cpp" />
@@ -103,9 +105,13 @@
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneOption.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="Target.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Flower.h" />
+    <ClInclude Include="FlowerPartsLoder.h" />
+    <ClInclude Include="FlowerPartsStatus.h" />
     <ClInclude Include="GameUIManager.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="InGameData.h" />
@@ -116,6 +122,7 @@
     <ClInclude Include="SceneOption.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="SceneType.h" />
+    <ClInclude Include="Target.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
