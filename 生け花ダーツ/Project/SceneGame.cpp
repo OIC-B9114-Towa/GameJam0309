@@ -162,7 +162,7 @@ void CSceneGame::UpdateSS_WAITTHROW() {
 	else if (g_pInput->IsKeyPull(MOFKEY_SPACE))
 	{
 		//投げ終わったら「THROWING」フェーズへ移行
-			m_Flower[gCurrentFlowerCount].Fire();
+		m_Flower[gCurrentFlowerCount].Fire();
 		gGamePhase = SS_THROWING;
 	}
 }
@@ -190,162 +190,156 @@ void CSceneGame::UpdateSS_PAUSE() {
 }
 
 void CSceneGame::UpdateSS_THROWING() {
-	for (int i = 0; i < FLOWERCOUNT; i++)
-	{
-		m_Flower[i].Update();
-	}
+	m_Flower[gCurrentFlowerCount].Update();
 	for (int i = 0; i < 5; i++)
 	{
-		for (int j = 0; j < FLOWERCOUNT; j++)
+		m_Target[i].Collision(m_Flower[gCurrentFlowerCount], i);
+	}
+}
+
+void CSceneGame::UpdateSS_WAITTHROWRESULT() {
+	//投げた本数を＋１し、既定の本数投げ終えたらゲームを終了する
+	gCurrentFlowerCount++;
+	if (gCurrentFlowerCount >= FLOWERCOUNT)
+	{
+		gGamePhase = SS_GAMEEND;
+	}
+}
+
+void CSceneGame::UpdateSS_GAMERESULT() {
+	if (gGameUIManager.ResultSlideIn())
+	{
+		if (g_pInput->IsKeyPush(MOFKEY_SPACE))
 		{
-			m_Target[i].Collision(m_Flower[j], i);
+			gGamePhase = SS_GAMEEND;
+		}
+		else if (g_pInput->IsKeyPush(MOFKEY_X))
+		{
+			gGamePhase = SS_RETRY;
 		}
 	}
 }
 
-	void CSceneGame::UpdateSS_WAITTHROWRESULT() {
-		//投げた本数を＋１し、既定の本数投げ終えたらゲームを終了する
-		gCurrentFlowerCount++;
-		if (gCurrentFlowerCount >= FLOWERCOUNT)
-		{
-			gGamePhase = SS_GAMEEND;
-		}
+void CSceneGame::UpdateSS_GAMEEND() {
+	//すべて投げ終わったらゲーム終了
+		//暗幕が下りるまで待機
+	if (gGameUIManager.GameEndAnim())
+	{
+		m_bEnd = true;
+		m_NextScene = SCENETYPE_TITLE;
 	}
+}
 
-	void CSceneGame::UpdateSS_GAMERESULT() {
-		if (gGameUIManager.ResultSlideIn())
-		{
-			if (g_pInput->IsKeyPush(MOFKEY_SPACE))
-			{
-				gGamePhase = SS_GAMEEND;
-			}
-			else if (g_pInput->IsKeyPush(MOFKEY_X))
-			{
-				gGamePhase = SS_RETRY;
-			}
-		}
+void CSceneGame::UpdateSS_RETRY() {
+	//ポーズメニューでリトライ選択時
+		//暗幕が下りるまで待機
+	if (gGameUIManager.GameEndAnim())
+	{
+		gGamePhase = SS_INTRO;
+		this->Release();
+		this->Initialize();
 	}
+}
 
-	void CSceneGame::UpdateSS_GAMEEND() {
-		//すべて投げ終わったらゲーム終了
-			//暗幕が下りるまで待機
-		if (gGameUIManager.GameEndAnim())
-		{
-			m_bEnd = true;
-			m_NextScene = SCENETYPE_TITLE;
-		}
+void CSceneGame::UpdateDebug() {
+
+}
+
+void CSceneGame::Render() {
+	//深度バッファ有効化
+	g_pGraphics->SetDepthEnable(TRUE);
+
+
+	CGraphicsUtilities::SetCamera(&m_Camera);
+
+	//シェーダーエフェクトを使って描画
+	if (m_EffectEnabled)
+	{
+		RenderUseShader();
 	}
-
-	void CSceneGame::UpdateSS_RETRY() {
-		//ポーズメニューでリトライ選択時
-			//暗幕が下りるまで待機
-		if (gGameUIManager.GameEndAnim())
-		{
-			gGamePhase = SS_INTRO;
-			this->Release();
-			this->Initialize();
-		}
-	}
-
-	void CSceneGame::UpdateDebug() {
-
-	}
-
-	void CSceneGame::Render() {
-		//深度バッファ有効化
-		g_pGraphics->SetDepthEnable(TRUE);
-
-
-		CGraphicsUtilities::SetCamera(&m_Camera);
-
-		//シェーダーエフェクトを使って描画
-		if (m_EffectEnabled)
-		{
-			RenderUseShader();
-		}
-		//シェーダーエフェクトを使わずに描画
-		else
-		{
-			//床描画用行列
-			CMatrix44 matPlane;
-			//matPlane.Scaling(50.0f);
-			//床描画
-			CGraphicsUtilities::RenderPlane(matPlane);
-			//シーン描画
-			RenderFlower();
-			for (int i = 0; i < 5; i++)
-			{
-				m_Target[i].Render();
-			}
-		}
-		g_pGraphics->SetDepthEnable(FALSE);
-
-		//UIの描画
-		gGameUIManager.RenderUI(gCurrentFlowerCount, FLOWERCOUNT, &gScoreResult);
-	}
-
-	void CSceneGame::RenderUseShader() {
+	//シェーダーエフェクトを使わずに描画
+	else
+	{
 		//床描画用行列
 		CMatrix44 matPlane;
-		matPlane.Scaling(50.0f);
-		g_pGraphics->SetBlending(BLEND_NONE);
-
-		m_ShadowMap.BeginTexture();
+		//matPlane.Scaling(50.0f);
+		//床描画
+		CGraphicsUtilities::RenderPlane(matPlane);
+		//シーン描画
+		RenderFlower();
+		for (int i = 0; i < 5; i++)
 		{
-			g_pGraphics->ClearTarget();
-
-			//CGraphicsUtilities::RenderPlane(matPlane);
-
-			RenderFlower();
-			for (int i = 0; i < 5; i++)
-			{
-				m_Target[i].Render();
-			}
-		}
-		m_ShadowMap.EndTexture();
-
-		g_pGraphics->SetBlending(BLEND_NORMAL);
-
-		m_ShadowMap.BeginRenderer();
-		{
-			g_pGraphics->ClearTarget(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0);
-			//床描画
-			//CGraphicsUtilities::RenderPlane(matPlane);
-			//シーン描画
-			RenderFlower();
-			for (int i = 0; i < 5; i++)
-			{
-				m_Target[i].Render();
-			}
-		}
-		m_ShadowMap.EndRenderer();
-	}
-
-	void CSceneGame::RenderFlower() {
-		for (int i = 0; i <= gCurrentFlowerCount; i++)
-		{
-			int no = m_Flower[i].GetNo();
-			if (no != -1)
-				m_Flower[i].Render(m_Target[no].GetPos());
-			else
-				m_Flower[i].Render();
+			m_Target[i].Render();
 		}
 	}
+	g_pGraphics->SetDepthEnable(FALSE);
 
-	void CSceneGame::RenderDebug() {
+	//UIの描画
+	gGameUIManager.RenderUI(gCurrentFlowerCount, FLOWERCOUNT, &gScoreResult);
+}
 
-	}
+void CSceneGame::RenderUseShader() {
+	//床描画用行列
+	CMatrix44 matPlane;
+	matPlane.Scaling(50.0f);
+	g_pGraphics->SetBlending(BLEND_NONE);
 
-	void CSceneGame::Release() {
-		gGameUIManager.ReleaseUI();
-		if (gScoreResult.FlowerPos)
+	m_ShadowMap.BeginTexture();
+	{
+		g_pGraphics->ClearTarget();
+
+		//CGraphicsUtilities::RenderPlane(matPlane);
+
+		RenderFlower();
+		for (int i = 0; i < 5; i++)
 		{
-			delete[] gScoreResult.FlowerPos;
-			gScoreResult.FlowerPos = NULL;
-		}
-		if (gScoreResult.FlowerColor)
-		{
-			delete[] gScoreResult.FlowerColor;
-			gScoreResult.FlowerColor = NULL;
+			m_Target[i].Render();
 		}
 	}
+	m_ShadowMap.EndTexture();
+
+	g_pGraphics->SetBlending(BLEND_NORMAL);
+
+	m_ShadowMap.BeginRenderer();
+	{
+		g_pGraphics->ClearTarget(0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0);
+		//床描画
+		//CGraphicsUtilities::RenderPlane(matPlane);
+		//シーン描画
+		RenderFlower();
+		for (int i = 0; i < 5; i++)
+		{
+			m_Target[i].Render();
+		}
+	}
+	m_ShadowMap.EndRenderer();
+}
+
+void CSceneGame::RenderFlower() {
+	for (int i = 0; i <= gCurrentFlowerCount; i++)
+	{
+		int no = m_Flower[i].GetNo();
+		if (no != -1)
+			m_Flower[i].Render(m_Target[no].GetPos());
+		else
+			m_Flower[i].Render();
+	}
+}
+
+void CSceneGame::RenderDebug() {
+
+}
+
+void CSceneGame::Release() {
+	gGameUIManager.ReleaseUI();
+	if (gScoreResult.FlowerPos)
+	{
+		delete[] gScoreResult.FlowerPos;
+		gScoreResult.FlowerPos = NULL;
+	}
+	if (gScoreResult.FlowerColor)
+	{
+		delete[] gScoreResult.FlowerColor;
+		gScoreResult.FlowerColor = NULL;
+	}
+}
